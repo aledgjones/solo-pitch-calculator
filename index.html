@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                background-color: rgb(235, 235, 235);
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+            }
+            #card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: white;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                padding: 40px;
+            }
+            #result {
+                font-family: sans-serif;
+                font-size: 48px;
+                margin: 20px 0 0 0;
+            }
+
+            select {
+                appearance: none;
+                background-color: white;
+                border-radius: 3px;
+                padding: 12px 0 12px 20px;
+            }
+
+            select:nth-of-type(1),
+            select:nth-of-type(3) {
+                width: 50px;
+            }
+
+            select:nth-of-type(2) {
+                width: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="card">
+            <div id="selector">
+                <select id="pitch">
+                    <option selected>C</option>
+                    <option>D</option>
+                    <option>E</option>
+                    <option>F</option>
+                    <option>G</option>
+                    <option>A</option>
+                    <option>B</option>
+                </select>
+
+                <select id="accidental">
+                    <option value="#">Sharp</option>
+                    <option value="" selected>Natural</option>
+                    <option value="b">Flat</option>
+                </select>
+
+                <select id="octave">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4" selected>4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div id="result">60</div>
+        </div>
+
+        <script>
+            const $pitch = document.getElementById("pitch");
+            const $accidental = document.getElementById("accidental");
+            const $octave = document.getElementById("octave");
+            const $result = document.getElementById("result");
+
+            const result = () => {
+                const SEMITONES = [0, 2, 4, 5, 7, 9, 11];
+                const LETTERS = ["C", "D", "E", "F", "G", "A", "B"];
+                const C0 = 12;
+
+                const letter = $pitch.options[$pitch.selectedIndex].value;
+                const acc =
+                    $accidental.options[$accidental.selectedIndex].value;
+                const octave = parseInt(
+                    $octave.options[$octave.selectedIndex].value
+                );
+
+                const step = LETTERS.indexOf(letter.toUpperCase());
+                const alteration = acc[0] === "b" ? -acc.length : acc.length;
+                const position = SEMITONES[step] + alteration;
+
+                $result.innerHTML = C0 + position + 12 * octave;
+            };
+
+            $pitch.addEventListener("change", result);
+            $accidental.addEventListener("change", result);
+            $octave.addEventListener("change", result);
+        </script>
+    </body>
+</html>
